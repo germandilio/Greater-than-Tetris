@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="712.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.hse.germandilio.tetris.client.controllers.TetrisViewController">
+    <center>
+        <BorderPane prefHeight="657.0" prefWidth="453.0" style="-fx-border-color: #000000; -fx-border-width: 1;">
+            <center>
+                <GridPane fx:id="gridPanel" hgap="1" onDragDropped="#handleBrickDropped" onDragOver="#handleDragOver" prefHeight="450.0" prefWidth="503.0" style="lor: #000000; -fx-background-image: url(GameFieldBackground.png) " vgap="1">
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                    <BorderPane.margin>
+                        <Insets />
+                    </BorderPane.margin>
+                </GridPane>
+            </center>
+        </BorderPane>
+    </center>
+    <right>
+        <VBox prefHeight="501.0" prefWidth="270.0" style="-fx-spacing: 10; -fx-padding: 10;" BorderPane.alignment="CENTER">
+            <HBox prefHeight="11.0" prefWidth="292.0" style="-fx-padding: 0;">
+                <children>
+                    <Text text="Ваше имя: " textAlignment="CENTER" wrappingWidth="141.07421875" />
+                    <Text fx:id="userName" text="" textAlignment="CENTER" wrappingWidth="89.8359375" />
+                </children>
+            </HBox>
+            <HBox prefHeight="2.0" prefWidth="292.0" style="-fx-padding: 0;">
+                <children>
+                    <Text text="Имя партнера: " textAlignment="CENTER" wrappingWidth="141.07421875" />
+                    <Text fx:id="partnerName" text="" textAlignment="CENTER" wrappingWidth="89.8359375" />
+                </children>
+            </HBox>
+            <HBox prefHeight="3.0" prefWidth="292.0" style="-fx-padding: 0;">
+                <children>
+                    <Text text="Макс. время сеанса: " textAlignment="CENTER" wrappingWidth="141.07421875" />
+                    <Text fx:id="timeout" text="00:00:00" textAlignment="CENTER" wrappingWidth="89.8359375" />
+                </children>
+            </HBox>
+            <HBox prefHeight="0.0" prefWidth="292.0" style="-fx-padding: 0;">
+                <children>
+                    <Text text="Текущая сессия: " textAlignment="CENTER" wrappingWidth="141.07421875" />
+                    <Text fx:id="currentSessionStopwatch" text="00:00:00" textAlignment="CENTER" wrappingWidth="89.8359375" />
+                </children>
+            </HBox>
+            <HBox prefHeight="46.0" prefWidth="292.0" style="-fx-padding: 20;">
+                <children>
+                    <Button alignment="CENTER" onMouseClicked="#onExitButtonClick" prefHeight="32.0" prefWidth="231.0" text="Завершить игру">
+                        <opaqueInsets>
+                            <Insets />
+                        </opaqueInsets>
+                        <font>
+                            <Font name="Arial" size="13.0" />
+                        </font>
+                    </Button>
+                </children>
+            </HBox>
+            <HBox prefHeight="4.0" prefWidth="292.0" style="-fx-padding: 20;">
+                <Text fx:id="status" fill="#ff0101" text="Ожидание партнера" textAlignment="CENTER" wrappingWidth="251.87939453125" />
+            </HBox>
+            <Text text="Следующая фигура:" textAlignment="CENTER" wrappingWidth="251.87939453125" />
+            <BorderPane prefHeight="106.0" prefWidth="261.0" style="-fx-border-color: #000000; -fx-border-width: 1;">
+                <center>
+                    <GridPane fx:id="brickToDrag" alignment="CENTER" hgap="1" onDragDetected="#handleDragOnNextBrick" prefHeight="121.0" prefWidth="267.0" vgap="1" />
+                </center>
+            </BorderPane>
+            <Text style="-fx-start-margin: 10" text="Якорем служит центральная клетка матрицы 3x3" textAlignment="CENTER" wrappingWidth="268.630859375" />
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+        </VBox>
+    </right>
+</BorderPane>
