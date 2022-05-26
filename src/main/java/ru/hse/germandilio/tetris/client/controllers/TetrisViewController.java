@@ -97,7 +97,7 @@ public class TetrisViewController implements IReset {
                     ((int) dragEvent.getSceneX()) / BRICK_SIZE,
                     ((int) dragEvent.getSceneY()) / BRICK_SIZE);
 
-            stats.actionHappened();
+            stats.brickPlaced();
             if (successfully) {
                 redrawBoard();
 
@@ -156,7 +156,7 @@ public class TetrisViewController implements IReset {
         stopwatch = new Timeline(new KeyFrame(Duration.seconds(1), actionEvent -> {
             stats.updateStopWatch();
 
-            long seconds = stats.getSecondsSinceGameStart();
+            long seconds = stats.getGameSessionDuration();
             currentSessionStopwatch.setText(convertTime(seconds));
         }));
 
@@ -214,8 +214,8 @@ public class TetrisViewController implements IReset {
         Alert exitAlertWindow = new Alert(Alert.AlertType.INFORMATION);
 
         exitAlertWindow.setTitle("Выберите действие");
-        exitAlertWindow.setHeaderText("Ходов: " + stats.getActionsCounter() + ". Время в игре: "
-                + convertTime(stats.getSecondsSinceGameStart()));
+        exitAlertWindow.setHeaderText("Ходов: " + stats.getBricksPlaced() + ". Время в игре: "
+                + convertTime(stats.getGameSessionDuration()));
         exitAlertWindow.setContentText("Вы действительно хотите выйти?");
 
         return exitAlertWindow;

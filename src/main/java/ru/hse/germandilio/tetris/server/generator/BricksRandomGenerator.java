@@ -12,19 +12,20 @@ public class BricksRandomGenerator {
     private final List<Brick> brickTypes = new ArrayList<>();
     private final List<boolean[][]> generatedBrickSequence = new ArrayList<>();
 
+    /**
+     * Initialize brick generation and building bricks sequence.
+     */
     public BricksRandomGenerator() {
-        brickTypes.add(new TBrick());
-        brickTypes.add(new ShortTBrick());
-        brickTypes.add(new CornerBrick());
-        brickTypes.add(new IBrick());
-        brickTypes.add(new JBrick());
-        brickTypes.add(new OBrick());
-        brickTypes.add(new SBrick());
-        brickTypes.add(new LBrick());
-
+        generateBrickTypes();
         generateBrickSequence();
     }
 
+    /**
+     * Get next brick in sequence by index.
+     *
+     * @param indexInSequence index
+     * @return Boolean matrix (brick). For converting to String use {@code convertToString}.
+     */
     public synchronized boolean[][] getBrick(int indexInSequence) {
         if (indexInSequence < generatedBrickSequence.size() && indexInSequence >= 0) {
             return generatedBrickSequence.get(indexInSequence);
@@ -32,6 +33,12 @@ public class BricksRandomGenerator {
         return null;
     }
 
+    /**
+     * Converts brick matrix of booleans to string representation fo zeros and ones.
+     *
+     * @param brick
+     * @return String representation (ex. 1 0 1 0 0 0 0 ... 1)
+     */
     public String convertToString(boolean[][] brick) {
         StringBuilder sb = new StringBuilder();
 
@@ -47,9 +54,17 @@ public class BricksRandomGenerator {
         return sb.toString();
     }
 
-    /**
-     * @return brick matrix of random shape and random rotation.
-     */
+    private void generateBrickTypes() {
+        brickTypes.add(new TBrick());
+        brickTypes.add(new ShortTBrick());
+        brickTypes.add(new CornerBrick());
+        brickTypes.add(new IBrick());
+        brickTypes.add(new JBrick());
+        brickTypes.add(new OBrick());
+        brickTypes.add(new SBrick());
+        brickTypes.add(new LBrick());
+    }
+
     private boolean[][] getRandomBrick() {
         int randomTypeIndex = randomInt(brickTypes.size());
         var brick = brickTypes.get(randomTypeIndex);

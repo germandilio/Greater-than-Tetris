@@ -1,10 +1,8 @@
 package ru.hse.germandilio.tetris.client.model.client;
 
 import ru.hse.germandilio.tetris.client.controllers.ActionProvider;
-import ru.hse.germandilio.tetris.commands.GameStatus;
-import ru.hse.germandilio.tetris.commands.ServerCommand;
-import ru.hse.germandilio.tetris.commands.CommandSender;
-import ru.hse.germandilio.tetris.commands.UserCommand;
+import ru.hse.germandilio.tetris.commands.CommandsAPI;
+import ru.hse.germandilio.tetris.server.clienthandling.CommandSender;
 
 import java.util.List;
 
@@ -17,7 +15,7 @@ public class ClientCommandHandler {
         this.commandSender = commandSender;
     }
 
-    public void handle(ServerCommand command, List<String> arguments) {
+    public void handle(CommandsAPI command, List<String> arguments) {
         switch(command) {
             case CONNECTED -> authorize(arguments);
             case WAITING_START_GAME -> waitStartGame();

@@ -1,10 +1,10 @@
-package ru.hse.germandilio.tetris.server;
+package ru.hse.germandilio.tetris.server.control;
 
 import java.util.Scanner;
 
 public class ConsoleHandler implements InputHandler {
-    private static final String CLIENTS_NUMBER_PROMT = "Введите кол-во клиентов";
-    private static final String TIMEOUT_PROMT = "Введите максимальное время сессии (в секундах)";
+    private static final String CLIENTS_NUMBER_PROMPT = "Enter max clients number (1 or 2)";
+    private static final String TIMEOUT_PROMPT = "Enter max game session time (in seconds)";
 
     private final Scanner scanner;
 
@@ -15,7 +15,7 @@ public class ConsoleHandler implements InputHandler {
     @Override
     public int getClientsNumber() {
         int amount = -1;
-        System.out.println(CLIENTS_NUMBER_PROMT);
+        System.out.println(CLIENTS_NUMBER_PROMPT);
 
         while (amount < 1 || amount > 2) {
             if (scanner.hasNextInt()) {
@@ -24,7 +24,7 @@ public class ConsoleHandler implements InputHandler {
             else if (scanner.hasNext()){
                 scanner.next();
                 amount = -1;
-                System.out.println(CLIENTS_NUMBER_PROMT);
+                System.out.println(CLIENTS_NUMBER_PROMPT);
             } else {
                 break;
             }
@@ -35,7 +35,7 @@ public class ConsoleHandler implements InputHandler {
     @Override
     public long getTimeout() {
         long timeout = -1;
-        System.out.println(TIMEOUT_PROMT);
+        System.out.println(TIMEOUT_PROMPT);
 
         while (timeout < 0) {
             if (scanner.hasNextLong()) {
@@ -44,7 +44,7 @@ public class ConsoleHandler implements InputHandler {
             else if (scanner.hasNext()){
                 scanner.next();
                 timeout = -1;
-                System.out.println(TIMEOUT_PROMT);
+                System.out.println(TIMEOUT_PROMPT);
             } else {
                 break;
             }

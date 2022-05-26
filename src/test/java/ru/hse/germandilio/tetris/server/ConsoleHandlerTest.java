@@ -2,10 +2,9 @@ package ru.hse.germandilio.tetris.server;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import ru.hse.germandilio.tetris.server.control.ConsoleHandler;
 
 import java.util.Scanner;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ConsoleHandlerTest {
 

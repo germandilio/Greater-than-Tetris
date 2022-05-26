@@ -15,18 +15,18 @@ class UserStatsTest {
 
     @Test
     void actionHappenedTest() {
-        int expectedCounter = stats.getActionsCounter();
-        stats.actionHappened();
+        int expectedCounter = stats.getBricksPlaced();
+        stats.brickPlaced();
         expectedCounter++;
 
-        Assertions.assertEquals(expectedCounter, stats.getActionsCounter());
+        Assertions.assertEquals(expectedCounter, stats.getBricksPlaced());
     }
 
     @Test
     void getActionsCounterTest() {
         int expectedCounter = 0;
 
-        Assertions.assertEquals(expectedCounter, stats.getActionsCounter());
+        Assertions.assertEquals(expectedCounter, stats.getBricksPlaced());
     }
 
     @Test
@@ -34,6 +34,6 @@ class UserStatsTest {
         stats.updateStopWatch();
         long expected = 1L;
 
-        Assertions.assertEquals(expected, stats.getSecondsSinceGameStart());
+        Assertions.assertEquals(expected, stats.getGameSessionDuration());
     }
 }

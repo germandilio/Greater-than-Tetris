@@ -121,7 +121,7 @@ public class GameManager implements ActionProvider {
     }
 
     public void sendEndGame() {
-        String end = UserCommand.buildCommand(UserCommand.END_GAME, Long.toString(userStats.getSecondsSinceGameStart()));
+        String end = UserCommand.buildCommand(UserCommand.END_GAME, Long.toString(userStats.getGameSessionDuration()));
         client.sendCommand(end);
         client.waitForEndGame();
     }
