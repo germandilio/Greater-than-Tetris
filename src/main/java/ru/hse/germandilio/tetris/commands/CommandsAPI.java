@@ -1,5 +1,6 @@
 package ru.hse.germandilio.tetris.commands;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +18,7 @@ public enum CommandsAPI {
      * Prompt for new brick.
      *
      * @apiNote CLIENT -> SERVER
-     * @implNote No arguments.
+     * @implNote Arguments: {@code Integer} index of next brick.
      */
     GET_NEXT_BRICK(1),
     /**
@@ -46,6 +47,13 @@ public enum CommandsAPI {
     // !----------------------- SERVER -> CLIENT -----------------------!
 
     /**
+     * Client has been successfully registered on server.
+     *
+     * @apiNote SERVER -> CLIENT
+     * @implNote No arguments.
+     * */
+    CONNECTED(0),
+    /**
      * Waiting for new game start.
      *
      * @apiNote SERVER -> CLIENT
@@ -59,6 +67,13 @@ public enum CommandsAPI {
      * @implNote Arguments: {@code String} opponent name, {@code Long} max game session time.
      */
     START_GAME(2),
+    /**
+     * Starts single game sessions on client.
+     *
+     * @apiNote SERVER -> CLIENT
+     * @implNote Arguments: {@code Long} max game session time.
+     */
+    START_GAME_SINGLE(1),
     /**
      * Passing new generated brick as parameter.
      *
@@ -120,21 +135,24 @@ public enum CommandsAPI {
      * @param stringCommand {@code String} representation
      * @return {@code CommandsAPI}
      */
-    public static CommandsAPI getCommandType(String stringCommand) {
+    public static CommandsAPI getCommandType(String stringCommand) throws IOException {
         return switch (stringCommand) {
             case "STARTING_GAME" -> STARTING_GAME;
             case "GET_NEXT_BRICK" -> GET_NEXT_BRICK;
             case "LEAVE_GAME" -> LEAVE_GAME;
             case "CLIENT_DISCONNECTED" -> CLIENT_DISCONNECTED;
             case "GET_TOP_10" -> GET_TOP;
+            case "CONNECTED" -> CONNECTED;
             case "WAITING_FOR_NEW_GAME" -> WAITING_FOR_NEW_GAME;
             case "START_GAME" -> START_GAME;
+            case "START_GAME_SINGLE" -> START_GAME_SINGLE;
             case "NEXT_BRICK" -> NEXT_BRICK;
             case "WAITING_FOR_END_GAME" -> WAITING_FOR_END_GAME;
             case "END_GAME" -> END_GAME;
             case "END_GAME_OPPONENT_LEAVE" -> END_GAME_OPPONENT_LEAVE;
             case "SERVER_DISCONNECTED" -> SERVER_DISCONNECTED;
             case "TOP_10" -> TOP_10;
+            case "" -> throw new IOException();
             default -> throw new IllegalArgumentException("Unknown command type.");
         };
     }
