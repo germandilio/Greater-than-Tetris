@@ -15,16 +15,16 @@ public class ConsoleHandler implements InputHandler {
     @Override
     public int getClientsNumber() {
         int amount = -1;
-        System.out.println(CLIENTS_NUMBER_PROMPT);
 
         while (amount < 1 || amount > 2) {
+            System.out.println(CLIENTS_NUMBER_PROMPT);
+
             if (scanner.hasNextInt()) {
                 amount = scanner.nextInt();
             }
             else if (scanner.hasNext()){
                 scanner.next();
                 amount = -1;
-                System.out.println(CLIENTS_NUMBER_PROMPT);
             } else {
                 break;
             }
@@ -35,16 +35,16 @@ public class ConsoleHandler implements InputHandler {
     @Override
     public long getTimeout() {
         long timeout = -1;
-        System.out.println(TIMEOUT_PROMPT);
 
         while (timeout < 0) {
+            System.out.println(TIMEOUT_PROMPT);
+
             if (scanner.hasNextLong()) {
                 timeout = scanner.nextLong();
             }
             else if (scanner.hasNext()){
                 scanner.next();
                 timeout = -1;
-                System.out.println(TIMEOUT_PROMPT);
             } else {
                 break;
             }

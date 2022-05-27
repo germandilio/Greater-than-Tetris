@@ -3,14 +3,14 @@ package ru.hse.germandilio.tetris.model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.hse.germandilio.tetris.client.model.UserStats;
+import ru.hse.germandilio.tetris.client.model.GameSessionStats;
 
 class UserStatsTest {
-    private UserStats stats;
+    private GameSessionStats stats;
 
     @BeforeEach
     void createUserStats() {
-        stats = new UserStats();
+        stats = new GameSessionStats();
     }
 
     @Test

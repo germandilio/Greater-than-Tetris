@@ -22,17 +22,20 @@ public class TetrisApplication extends Application {
 
         try {
             TetrisViewController viewController = fxmlLoader.getController();
-
             var manager = new GameManager(viewController);
 
             stage.setOnCloseRequest((windowEvent) -> {
-                manager.exit();
-                Platform.exit();
+                try {
+                    manager.close();
+                    Platform.exit();
+                } catch (Exception ex) {
+                    System.out.println("Some errors on closing application accuars");
+                }
             });
-            manager.startGame();
 
-        } catch (IOException ex) {
-            System.out.println("Cannot connect to the server. Run server first!");
+            manager.launch();
+            manager.registration();
+
         } catch(Exception ex) {
             System.out.println("Poo-pi-poop. Something went wrong.");
         }

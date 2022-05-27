@@ -20,7 +20,7 @@ public class ServerManager {
     }
 
     public void launch() {
-        System.out.println("Server launched on ." + DEFAULT_PORT);
+        System.out.println("Server launched on port=" + DEFAULT_PORT);
         System.out.println("Waiting for connections...");
 
         try {

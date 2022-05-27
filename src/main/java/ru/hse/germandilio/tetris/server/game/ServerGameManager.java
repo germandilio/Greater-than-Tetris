@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ServerGameManager {
+public class ServerGameManager implements GameManager {
     private final int maxUsersNumber;
     private final long maxSessionTime;
 
@@ -35,6 +35,7 @@ public class ServerGameManager {
         return currentUsersCount;
     }
 
+    @Override
     public synchronized Connection playerConnected(CommandSender clientHandler) {
         if (currentUsersCount == maxUsersNumber)
             throw new IllegalStateException("Current clients number is bigger than max affordable number.");
@@ -47,6 +48,7 @@ public class ServerGameManager {
         return connection;
     }
 
+    @Override
     public synchronized void setName(Connection client, String name) {
         client.setName(name);
 
@@ -54,6 +56,7 @@ public class ServerGameManager {
         System.out.println("Получено имя клиента: " + name);
     }
 
+    @Override
     public boolean readyToStartGame() {
         boolean readyForGame = true;
 
@@ -65,6 +68,7 @@ public class ServerGameManager {
         return readyForGame;
     }
 
+    @Override
     public synchronized void startGame(Connection client) {
         brickGenerator = new BricksRandomGenerator();
 
@@ -72,25 +76,31 @@ public class ServerGameManager {
         var opponent = getOpponent(client);
         if (opponent == null) {
             // single mode game
-            String command = CommandsAPI.buildCommand(CommandsAPI.START_GAME,
-                    "",
+            String command = CommandsAPI.buildCommand(CommandsAPI.START_GAME_SINGLE,
                     Long.toString(maxSessionTime));
             handler.sendCommand(command);
         } else {
             var opponentHandler = userConnections.get(opponent);
 
+            String nameToOpponent = replaceWhiteSpaces(client.getName());
+            String nameToClient = replaceWhiteSpaces(opponent.getName());
+
             String commandToOpponent = CommandsAPI.buildCommand(CommandsAPI.START_GAME,
-                    client.getName(),
+                    nameToOpponent,
                     Long.toString(maxSessionTime));
             String commandToClient = CommandsAPI.buildCommand(CommandsAPI.START_GAME,
-                    opponent.getName(),
+                    nameToClient,
                     Long.toString(maxSessionTime));
 
             handler.sendCommand(commandToClient);
             opponentHandler.sendCommand(commandToOpponent);
         }
+
+        // TODO replace
+        System.out.println("Отправлено начало игры игроку с именем: " + client.getName());
     }
 
+    @Override
     public boolean readyToEndGame() {
         boolean readyEndGame = true;
 
@@ -102,30 +112,34 @@ public class ServerGameManager {
         return readyEndGame;
     }
 
+    @Override
     public synchronized void endGame(Connection client) {
         var handler = userConnections.get(client);
         var opponent = getOpponent(client);
         if (opponent == null) {
             // single mode game
+            String winnerName = replaceWhiteSpaces(client.getName());
             String command = CommandsAPI.buildCommand(CommandsAPI.END_GAME,
                     "",
                     Long.toString(0L),
                     Integer.toString(0),
-                    client.getName());
+                    winnerName);
             handler.sendCommand(command);
         } else {
             var opponentHandler = userConnections.get(opponent);
 
-            String winnerName = getWinnerName(client, opponent);
+            String winnerName = replaceWhiteSpaces(getWinnerName(client, opponent));
+            String nameToOpponent = replaceWhiteSpaces(client.getName());
+            String nameToClient = replaceWhiteSpaces(opponent.getName());
 
             String commandToOpponent = CommandsAPI.buildCommand(CommandsAPI.END_GAME,
-                    client.getName(),
+                    nameToOpponent,
                     Long.toString(client.getGameSessionDuration()),
                     Integer.toString(client.getBrickPlaced()),
                     winnerName);
 
             String commandToClient = CommandsAPI.buildCommand(CommandsAPI.END_GAME,
-                    opponent.getName(),
+                    nameToClient,
                     Long.toString(opponent.getGameSessionDuration()),
                     Integer.toString(opponent.getBrickPlaced()),
                     winnerName);
@@ -138,6 +152,7 @@ public class ServerGameManager {
         System.out.println("Отправляю игрокам конец игры");
     }
 
+    @Override
     public synchronized void sendWaitingStartGame(Connection client) {
         var handler = userConnections.get(client);
         String command = CommandsAPI.buildCommand(CommandsAPI.WAITING_FOR_NEW_GAME);
@@ -147,6 +162,7 @@ public class ServerGameManager {
         System.out.println("Отправлено ожидание начала игры игроку с именем: " + client.getName());
     }
 
+    @Override
     public synchronized void sendWaitingEndGame(Connection client) {
         var handler = userConnections.get(client);
         String command = CommandsAPI.buildCommand(CommandsAPI.WAITING_FOR_END_GAME);
@@ -156,6 +172,7 @@ public class ServerGameManager {
         System.out.println("Отправлено ожидание конца игры игроку с именем: " + client.getName());
     }
 
+    @Override
     public synchronized void sendEndGameWithoutResults(Connection client) {
         var opponent = getOpponent(client);
         if (opponent == null) {
@@ -177,6 +194,7 @@ public class ServerGameManager {
         }
     }
 
+    @Override
     public synchronized void sendNextBrick(Connection client, int indexInSequence) {
         // TODO replace
         if (brickGenerator == null) {
@@ -192,10 +210,12 @@ public class ServerGameManager {
         handler.sendCommand(command);
     }
 
+    @Override
     public synchronized void saveGameSessionResults(Connection client) {
         // dataProvider
     }
 
+    @Override
     public synchronized void getTopSessions(Connection client, int topNumber) {
         // dataProvider
     }
@@ -232,5 +252,9 @@ public class ServerGameManager {
                 return client2.getName();
             }
         }
+    }
+
+    private String replaceWhiteSpaces(String string) {
+        return string.replaceAll(" ", "%20");
     }
 }

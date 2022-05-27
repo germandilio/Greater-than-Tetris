@@ -1,30 +1,25 @@
 package ru.hse.germandilio.tetris.client.controllers;
 
-import ru.hse.germandilio.tetris.commands.GameStatus;
+import ru.hse.germandilio.tetris.client.model.GameResult;
+
+import java.util.List;
 
 public interface ActionProvider {
-    void startTimer(long time);
+    void showTopResults(List<GameResult> results);
 
-    void startGame(String partnerName);
+    void forceEndGame();
 
-    void endGame(int opponentBricks, long opponentTime, int myBricks, long myTime,
-                 String winnerName);
+    void endGameWithoutOpponentResults();
 
-    void endGameSingle();
+    void endGame();
 
-    String getUserName();
+    void waitForEndGame();
 
-    long getGameTime();
+    void placeBrick(boolean[][] brick);
 
-    void waitForNextBrick();
+    void startGame();
 
-    void placeNextBrick(boolean[][] brick);
+    void waitForNewGame();
 
-    void waitForAction(String label);
-
-    void setStatus(GameStatus status);
-
-    GameStatus getStatus();
-
-    void closeBlockingWindow();
+    void unblockUser();
 }

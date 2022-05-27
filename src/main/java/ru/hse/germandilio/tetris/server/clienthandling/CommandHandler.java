@@ -1,15 +1,15 @@
 package ru.hse.germandilio.tetris.server.clienthandling;
 
 import ru.hse.germandilio.tetris.commands.CommandsAPI;
-import ru.hse.germandilio.tetris.server.game.ServerGameManager;
+import ru.hse.germandilio.tetris.server.game.GameManager;
 
 import java.util.List;
 
 public class CommandHandler {
-    private final ServerGameManager serverGame;
+    private final GameManager serverGame;
     private final Connection connection;
 
-    public CommandHandler(ServerGameManager serverGame, Connection clientConnection) {
+    public CommandHandler(GameManager serverGame, Connection clientConnection) {
         this.serverGame = serverGame;
         this.connection = clientConnection;
     }
@@ -19,14 +19,15 @@ public class CommandHandler {
             case STARTING_GAME -> startingClientGame(arguments);
             case GET_NEXT_BRICK -> sendBrick(arguments);
             case LEAVE_GAME -> clientLeavingGame(arguments);
-            case CLIENT_DISCONNECTED -> clientQuit(arguments);
+            case CLIENT_DISCONNECTED -> clientQuit();
             case GET_TOP -> getTop(arguments);
         }
     }
 
     private void startingClientGame(List<String> arguments) {
         // set name for connection
-        serverGame.setName(connection, arguments.get(0));
+        String name = arguments.get(0).replaceAll("%20", " ");
+        serverGame.setName(connection, name);
 
         // send waiting new game
         serverGame.sendWaitingStartGame(connection);
@@ -44,7 +45,7 @@ public class CommandHandler {
             index = Integer.parseInt(arguments.get(0));
         } catch (NumberFormatException e) {
             System.out.println("From client with name=" + connection.getName() + " was received command with wrong index.");
-            System.out.println("Server will automatically send brick with index=0");
+            System.out.println("Server will automatically send brick with index=" + index);
             return;
         }
 
@@ -71,7 +72,7 @@ public class CommandHandler {
         }
     }
 
-    private void clientQuit(List<String> arguments) {
+    private void clientQuit() {
         // send for opponent "end game opponent leave"
         serverGame.sendEndGameWithoutResults(connection);
     }

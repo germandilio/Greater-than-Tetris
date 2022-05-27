@@ -48,7 +48,7 @@
             </HBox>
             <HBox prefHeight="46.0" prefWidth="292.0" style="-fx-padding: 20;">
                 <children>
-                    <Button alignment="CENTER" onMouseClicked="#onExitButtonClick" prefHeight="32.0" prefWidth="231.0" text="Завершить игру">
+                    <Button fx:id="startStopButton" alignment="CENTER" onMouseClicked="#onGameStartStopClick" prefHeight="32.0" prefWidth="231.0" text="Начать игру">
                         <opaqueInsets>
                             <Insets />
                         </opaqueInsets>
@@ -67,7 +67,6 @@
                     <GridPane fx:id="brickToDrag" alignment="CENTER" hgap="1" onDragDetected="#handleDragOnNextBrick" prefHeight="121.0" prefWidth="267.0" vgap="1" />
                 </center>
             </BorderPane>
-            <Text style="-fx-start-margin: 10" text="Якорем служит центральная клетка матрицы 3x3" textAlignment="CENTER" wrappingWidth="268.630859375" />
             <opaqueInsets>
                 <Insets />
             </opaqueInsets>

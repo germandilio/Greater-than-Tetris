@@ -1,6 +1,6 @@
 package ru.hse.germandilio.tetris.server.clienthandling;
 
-import ru.hse.germandilio.tetris.server.game.ServerGameManager;
+import ru.hse.germandilio.tetris.server.game.GameManager;
 import ru.hse.germandilio.tetris.commands.CommandsAPI;
 
 import java.io.*;
@@ -15,7 +15,7 @@ public class ClientHandler implements Runnable, AutoCloseable, CommandSender {
 
     private final CommandHandler commandHandler;
 
-    public ClientHandler(Socket socket, ServerGameManager serverGame) throws IOException {
+    public ClientHandler(Socket socket, GameManager serverGame) throws IOException {
         this.socket = socket;
 
         input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -28,6 +28,10 @@ public class ClientHandler implements Runnable, AutoCloseable, CommandSender {
     @Override
     public void run() {
         try (socket; input; output) {
+            // send successful registration
+            String command = CommandsAPI.buildCommand(CommandsAPI.CONNECTED);
+            sendCommand(command);
+
             // handling input
             handlingInput();
 
@@ -41,6 +45,11 @@ public class ClientHandler implements Runnable, AutoCloseable, CommandSender {
             while (!socket.isClosed()) {
                 try {
                     String userInput = input.readLine();
+
+                    //TODO debug
+                    System.out.println("Получено от клиента: ");
+                    System.out.println(userInput);
+
                     String stringCommand = getStringCommand(userInput);
 
                     CommandsAPI command = CommandsAPI.getCommandType(stringCommand);
@@ -51,15 +60,13 @@ public class ClientHandler implements Runnable, AutoCloseable, CommandSender {
                 } catch (IOException e) {
                     System.out.println("Client connection error.");
                     break;
-                } catch (IllegalArgumentException ex) {
+                } catch (IllegalArgumentException | NullPointerException ex) {
                     // wrong command
                     System.out.println(ex.getMessage());
+                    break;
                 } catch (IllegalStateException ex) {
                     // generator is null
                     System.out.println("Bricks generator is null");
-                    System.out.println(ex.getMessage());
-                    break;
-                } catch (NullPointerException ex) {
                     System.out.println(ex.getMessage());
                     break;
                 }
@@ -90,7 +97,10 @@ public class ClientHandler implements Runnable, AutoCloseable, CommandSender {
     }
 
     @Override
-    public void sendCommand(String command) {
+    public synchronized void sendCommand(String command) {
+        // TODO replace
+        System.out.println(command);
+
         output.println(command);
     }
 }

@@ -46,7 +46,7 @@ public class Server implements AutoCloseable {
                 }
 
             } catch(IllegalArgumentException | IOException ex) {
-                throw new IllegalStateException("Cannot create executor environment or accept client.", ex);
+                System.out.println("Cannot accept clients. Server will shut down.");
             }
         }).start();
     }
