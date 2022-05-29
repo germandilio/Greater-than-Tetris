@@ -1,6 +1,8 @@
 package ru.hse.germandilio.tetris.server.clienthandling;
 
-public class Connection {
+import ru.hse.germandilio.tetris.client.controllers.IReset;
+
+public class Connection implements IReset {
     private final int id;
 
     // game session properties
@@ -47,5 +49,13 @@ public class Connection {
 
     public boolean endedGame() {
         return hasEndedGame;
+    }
+
+    @Override
+    public void reset() {
+        name = null;
+        gameSessionDuration = 0L;
+        brickPlaced = 0;
+        hasEndedGame = false;
     }
 }

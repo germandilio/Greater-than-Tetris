@@ -5,7 +5,7 @@ import ru.hse.germandilio.tetris.client.controllers.IReset;
 public class GameSessionStats implements IReset {
     private long maxSessionTime;
 
-    private long gameSessionDuration = 0;
+    private long gameSessionDuration = 0L;
     private int bricksPlaced = 0;
     private String name;
 
@@ -14,6 +14,9 @@ public class GameSessionStats implements IReset {
     private int opponentBricksPlaced;
 
     private String winnerName;
+
+    private boolean opponentLeaveGame;
+    private boolean hasEndedGame;
 
     public GameSessionStats() {
         name = null;
@@ -34,6 +37,10 @@ public class GameSessionStats implements IReset {
 
     public long getGameSessionDuration() {
         return gameSessionDuration;
+    }
+
+    public void stopGame() {
+        gameSessionDuration = maxSessionTime;
     }
 
     public String getOpponentName() {
@@ -76,6 +83,10 @@ public class GameSessionStats implements IReset {
         this.winnerName = winnerName;
     }
 
+    public void setOpponentLeave(boolean hasLeave) {
+        this.opponentLeaveGame = hasLeave;
+    }
+
     public long getMaxSessionTime() {
         return maxSessionTime;
     }
@@ -86,6 +97,22 @@ public class GameSessionStats implements IReset {
 
     public boolean gameStarted() {
         return name != null && opponentName != null;
+    }
+
+    public boolean opponentLeaveGame() {
+        return opponentLeaveGame;
+    }
+
+    public boolean hasOpponent() {
+        return !opponentLeaveGame && opponentName != null && !opponentName.isEmpty();
+    }
+
+    public void setEndedGame(boolean hasEndedGame) {
+        this.hasEndedGame = hasEndedGame;
+    }
+
+    public boolean hasEndedGame() {
+        return hasEndedGame;
     }
 
     @Override

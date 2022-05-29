@@ -1,12 +1,14 @@
 package ru.hse.germandilio.tetris.server.clienthandling;
 
 import ru.hse.germandilio.tetris.server.game.GameManager;
-import ru.hse.germandilio.tetris.commands.CommandsAPI;
+import ru.hse.germandilio.tetris.shared.commands.CommandsAPI;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 
+import static ru.hse.germandilio.tetris.server.control.ServerManager.LOG_INPUT_COMMANDS;
+import static ru.hse.germandilio.tetris.server.control.ServerManager.LOG_OUTPUT_COMMANDS;
 
 public class ClientHandler implements Runnable, AutoCloseable, CommandSender {
     private final Socket socket;
@@ -46,17 +48,17 @@ public class ClientHandler implements Runnable, AutoCloseable, CommandSender {
                 try {
                     String userInput = input.readLine();
 
-                    //TODO debug
-                    System.out.println("Получено от клиента: ");
-                    System.out.println(userInput);
+                    // log input command from client
+                    if (LOG_INPUT_COMMANDS) {
+                        System.out.println("From client: ");
+                        System.out.println(userInput);
+                    }
 
                     String stringCommand = getStringCommand(userInput);
-
                     CommandsAPI command = CommandsAPI.getCommandType(stringCommand);
                     var arguments = CommandsAPI.getArguments(command, userInput);
 
                     commandHandler.handle(command, arguments);
-
                 } catch (IOException e) {
                     System.out.println("Client connection error.");
                     break;
@@ -98,8 +100,11 @@ public class ClientHandler implements Runnable, AutoCloseable, CommandSender {
 
     @Override
     public synchronized void sendCommand(String command) {
-        // TODO replace
-        System.out.println(command);
+        // log
+        if (LOG_OUTPUT_COMMANDS) {
+            System.out.println("Send to client with socket: " + socket.getInetAddress());
+            System.out.println(command);
+        }
 
         output.println(command);
     }

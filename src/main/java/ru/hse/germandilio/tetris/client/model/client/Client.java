@@ -2,18 +2,23 @@ package ru.hse.germandilio.tetris.client.model.client;
 
 import ru.hse.germandilio.tetris.client.controllers.ActionProvider;
 import ru.hse.germandilio.tetris.client.model.GameSessionStats;
-import ru.hse.germandilio.tetris.commands.CommandsAPI;
+import ru.hse.germandilio.tetris.shared.commands.CommandsAPI;
 import ru.hse.germandilio.tetris.server.clienthandling.CommandSender;
 
 import java.io.*;
 import java.net.Socket;
 
 public class Client implements AutoCloseable, CommandSender {
+    public static boolean LOG_COMMANDS_FROM_SERVER = true;
+    public static boolean LOG_COMMANDS_TO_SERVER = false;
+
     private final ClientCommandHandler commandHandler;
+    private final ActionProvider gameManager;
 
     private final Socket socket;
     private final PrintWriter output;
     private final BufferedReader input;
+
 
     public Client(String host, int port, ActionProvider gameManager, GameSessionStats userStats) throws IOException {
         socket = new Socket(host, port);
@@ -21,6 +26,7 @@ public class Client implements AutoCloseable, CommandSender {
         input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 
+        this.gameManager = gameManager;
         commandHandler = new ClientCommandHandler(gameManager, userStats);
     }
 
@@ -29,18 +35,18 @@ public class Client implements AutoCloseable, CommandSender {
             try {
                 String userInput = input.readLine();
 
-                // TODO replace
-                System.out.println("Получено от сервера: ");
-                System.out.println(userInput);
+                if (LOG_COMMANDS_FROM_SERVER) {
+                    System.out.println("Received from server:");
+                    System.out.println(userInput);
+                }
 
                 String stringCommand = getStringCommand(userInput);
-
                 CommandsAPI command = CommandsAPI.getCommandType(stringCommand);
                 var arguments = CommandsAPI.getArguments(command, userInput);
 
                 commandHandler.handle(command, arguments);
             } catch (IOException e) {
-                System.out.println("Server connection exception.");
+                gameManager.forceEndGame();
                 break;
             } catch (IllegalArgumentException ex) {
                 System.out.println(ex.getMessage());
@@ -78,6 +84,11 @@ public class Client implements AutoCloseable, CommandSender {
 
     @Override
     public void sendCommand(String command) {
+        if (LOG_COMMANDS_TO_SERVER) {
+            System.out.println("Send to server:");
+            System.out.println(command);
+        }
+
         output.println(command);
     }
 }

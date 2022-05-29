@@ -1,25 +1,50 @@
 package ru.hse.germandilio.tetris.client.controllers;
 
-import ru.hse.germandilio.tetris.client.model.GameResult;
+import ru.hse.germandilio.tetris.client.model.ViewGameResult;
+import ru.hse.germandilio.tetris.shared.GameResult;
 
 import java.util.List;
 
 public interface ActionProvider {
-    void showTopResults(List<GameResult> results);
+    /**
+     * Swot to user top list result
+     * @param results list og game session results
+     */
+    void showTopResults(List<ViewGameResult> results);
 
+    /**
+     * End client game because fatal error.
+     */
     void forceEndGame();
 
-    void endGameWithoutOpponentResults();
-
+    /**
+     * End client game.
+     */
     void endGame();
 
+    /**
+     * Wait for opponent.
+     */
     void waitForEndGame();
 
+    /**
+     * Place brick that was sent by server.
+     * @param brick Brick to place
+     */
     void placeBrick(boolean[][] brick);
 
+    /**
+     * Start client game.
+     */
     void startGame();
 
+    /**
+     * Wait for opponent starts game.
+     */
     void waitForNewGame();
 
+    /**
+     * Unblock user.
+     */
     void unblockUser();
 }

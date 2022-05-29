@@ -19,6 +19,9 @@
     <orderEntry type="library" name="Maven: org.openjfx:javafx-base:mac:17.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:17.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:mac:17.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.derby:derby:10.15.2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.derby:derbyshared:10.15.2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.derby:derbyclient:10.15.2.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.8.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-commons:1.8.1" level="project" />

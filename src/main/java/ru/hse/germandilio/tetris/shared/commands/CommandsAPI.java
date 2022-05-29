@@ -1,4 +1,4 @@
-package ru.hse.germandilio.tetris.commands;
+package ru.hse.germandilio.tetris.shared.commands;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,13 +68,6 @@ public enum CommandsAPI {
      */
     START_GAME(2),
     /**
-     * Starts single game sessions on client.
-     *
-     * @apiNote SERVER -> CLIENT
-     * @implNote Arguments: {@code Long} max game session time.
-     */
-    START_GAME_SINGLE(1),
-    /**
      * Passing new generated brick as parameter.
      *
      * @apiNote SERVER -> CLIENT
@@ -115,10 +108,10 @@ public enum CommandsAPI {
      *
      * @apiNote SERVER -> CLIENT
      * @implNote Arguments: {@code String} number of game sessions, ... parameters by each game session in format:
-     * {@code String} opponent name, {@code DataTime}  end session date and time, {@code Integer} moves count,
+     * {@code String} player name, {@code LocalDateTime}  end session date and time, {@code Integer} moves count,
      * {@code Long} session time in seconds.
      */
-    TOP_10(1);
+    TOP_RESULTS(1);
 
 
     private final int argumentsCount;
@@ -141,17 +134,16 @@ public enum CommandsAPI {
             case "GET_NEXT_BRICK" -> GET_NEXT_BRICK;
             case "LEAVE_GAME" -> LEAVE_GAME;
             case "CLIENT_DISCONNECTED" -> CLIENT_DISCONNECTED;
-            case "GET_TOP_10" -> GET_TOP;
+            case "GET_TOP" -> GET_TOP;
             case "CONNECTED" -> CONNECTED;
             case "WAITING_FOR_NEW_GAME" -> WAITING_FOR_NEW_GAME;
             case "START_GAME" -> START_GAME;
-            case "START_GAME_SINGLE" -> START_GAME_SINGLE;
             case "NEXT_BRICK" -> NEXT_BRICK;
             case "WAITING_FOR_END_GAME" -> WAITING_FOR_END_GAME;
             case "END_GAME" -> END_GAME;
             case "END_GAME_OPPONENT_LEAVE" -> END_GAME_OPPONENT_LEAVE;
             case "SERVER_DISCONNECTED" -> SERVER_DISCONNECTED;
-            case "TOP_10" -> TOP_10;
+            case "TOP_RESULTS" -> TOP_RESULTS;
             case "" -> throw new IOException();
             default -> throw new IllegalArgumentException("Unknown command type.");
         };

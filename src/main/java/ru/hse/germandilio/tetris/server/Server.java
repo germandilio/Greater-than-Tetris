@@ -35,6 +35,7 @@ public class Server implements AutoCloseable {
             try(socket) {
                 ForkJoinPool executor = new ForkJoinPool();
 
+                // accept all client
                 for (int i = 0; i < serverGame.getMaxUsersNumber(); i++) {
                     var acceptedSocket = socket.accept();
                     var handler = new ClientHandler(acceptedSocket, serverGame);
@@ -42,6 +43,7 @@ public class Server implements AutoCloseable {
                     clients.add(handler);
                     System.out.println("Client connected with InetAddress=" + acceptedSocket.getInetAddress());
 
+                    // execute handler in different thread
                     executor.execute(handler);
                 }
 

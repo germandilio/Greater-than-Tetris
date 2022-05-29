@@ -1,20 +1,22 @@
 package ru.hse.germandilio.tetris.client.controllers;
 
 import javafx.application.Platform;
-import ru.hse.germandilio.tetris.client.model.GameResult;
+import ru.hse.germandilio.tetris.client.model.ViewGameResult;
 import ru.hse.germandilio.tetris.client.model.GameSessionStats;
 import ru.hse.germandilio.tetris.client.model.client.Client;
 import ru.hse.germandilio.tetris.client.model.gameboard.GameBoard;
-import ru.hse.germandilio.tetris.commands.CommandsAPI;
+import ru.hse.germandilio.tetris.shared.commands.CommandsAPI;
 import ru.hse.germandilio.tetris.server.clienthandling.CommandSender;
 
-import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.List;
 
 public class GameManager implements ActionProvider, AutoCloseable, CommandSender {
     private static final int DEFAULT_PORT = 5000;
     private static final String DEFAULT_IP = "127.0.0.1";
+
+    private static final String USER_WAIT_CONNECTION = "Подключение к серверу...";
+    private static final String USER_WAIT_OPPONENT = "Ожидание партнера";
 
     private final TetrisViewController viewController;
     private final GameBoard gameBoard;
@@ -31,31 +33,27 @@ public class GameManager implements ActionProvider, AutoCloseable, CommandSender
         gameSessionStats = new GameSessionStats();
     }
 
-    public GameBoard getGameBoard() {
-        return gameBoard;
-    }
-
-    public void launch() throws IOException {
-        viewController.initGameView(this, gameSessionStats);
-        waitForAction("Подключение к серверу...");
+    public void launch() {
+        viewController.initGameView(this, gameBoard, gameSessionStats);
+        waitForAction(USER_WAIT_CONNECTION);
 
         new Thread(() -> {
             try {
                 client = new Client(DEFAULT_IP, DEFAULT_PORT, this, gameSessionStats);
 
+                // handle responses from server
                 client.handle();
             } catch (UnknownHostException e) {
                 exceptionInServerThread = true;
-                //TODO platform run later blocking pop-up menu with only exit application button
                 forceEndGame();
 
-                System.out.println("Неизвестный ip адрес для подключения: " + DEFAULT_IP);
+                System.out.println("Unknown host with address: " + DEFAULT_IP);
             } catch (IllegalArgumentException ex) {
                 exceptionInServerThread = true;
-                System.out.println("Неизвестный порт для подключения: " + DEFAULT_PORT);
+                System.out.println("Illegal port: " + DEFAULT_PORT);
             } catch (Exception ex) {
                 exceptionInServerThread = true;
-                System.out.println("Ошибка соединения с сервером.");
+                System.out.println("Server connection error.");
             }
         }).start();
     }
@@ -63,22 +61,25 @@ public class GameManager implements ActionProvider, AutoCloseable, CommandSender
     public void registration() {
         viewController.blockUI();
 
+        // preview name in UI
         String name = viewController.getUserNameFromDialog();
         gameSessionStats.setName(name);
 
         // refresh UI
-        viewController.setUpUserName(name);
+        viewController.setupUserName(name);
         viewController.unblockUI();
     }
 
     @Override
-    public void showTopResults(List<GameResult> results) {
+    public void showTopResults(List<ViewGameResult> results) {
         if (exceptionInServerThread) return;
 
-        // новое дополнительное окно с результатами топ 10 игр
-
+        // show new window with top results
         Platform.runLater(() -> {
-
+            // unblock UI
+            viewController.resetActionStatus();
+            // show
+            viewController.showTopSessions(results);
         });
     }
 
@@ -86,23 +87,12 @@ public class GameManager implements ActionProvider, AutoCloseable, CommandSender
     public void forceEndGame() {
         if (exceptionInServerThread) return;
 
-        // pop up menu с единсвтенной кнопкой закрыть приложение
-        // и подписью об отключении сервера
-
         Platform.runLater(() -> {
-
-        });
-    }
-
-    @Override
-    public void endGameWithoutOpponentResults() {
-        if (exceptionInServerThread) return;
-
-        // pop up с результатми автоматического победителя без данных оппонента
-
-        Platform.runLater(() -> {
+            viewController.unblockUI();
             viewController.resetActionStatus();
 
+            // show pop-up menu with only exit button
+            viewController.showQuitApp();
         });
     }
 
@@ -110,12 +100,12 @@ public class GameManager implements ActionProvider, AutoCloseable, CommandSender
     public void endGame() {
         if (exceptionInServerThread) return;
 
-        // pop up со всей информацие о противники и себе
-        // кнопки начать новую игру или выйти из приложения
-
         Platform.runLater(() -> {
+            viewController.unblockUI();
             viewController.resetActionStatus();
 
+            // show window with results
+            viewController.showEndGameResults();
         });
     }
 
@@ -123,6 +113,7 @@ public class GameManager implements ActionProvider, AutoCloseable, CommandSender
     public void waitForEndGame() {
         if (exceptionInServerThread) return;
 
+        // wait
         waitForAction("Ожидание партнера...");
     }
 
@@ -139,8 +130,7 @@ public class GameManager implements ActionProvider, AutoCloseable, CommandSender
     public void startGame() {
         if (exceptionInServerThread) return;
 
-        // setupAllViewParameters
-
+        // setup all UI parameters
         Platform.runLater(() -> {
             gameBoard.reset();
 
@@ -162,15 +152,13 @@ public class GameManager implements ActionProvider, AutoCloseable, CommandSender
     public void waitForNewGame() {
         if (exceptionInServerThread) return;
 
-        waitForAction("Ожидание партнера");
+        // wait
+        waitForAction(USER_WAIT_OPPONENT);
     }
 
     @Override
     public void unblockUser() {
-        Platform.runLater(() -> {
-            viewController.resetActionStatus();
-            viewController.unblockUI();
-        });
+        Platform.runLater(viewController::resetActionStatus);
     }
 
     @Override
@@ -189,9 +177,5 @@ public class GameManager implements ActionProvider, AutoCloseable, CommandSender
         Platform.runLater(() -> {
             viewController.waitForAction(displayActionStatus);
         });
-    }
-
-    public String replaceWhiteSpaces(String string) {
-        return string.replaceAll(" ", "%20");
     }
 }

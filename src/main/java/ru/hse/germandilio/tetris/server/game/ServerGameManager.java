@@ -1,13 +1,13 @@
 package ru.hse.germandilio.tetris.server.game;
 
-import ru.hse.germandilio.tetris.commands.CommandsAPI;
+import ru.hse.germandilio.tetris.server.database.GameSessionsDatabase;
+import ru.hse.germandilio.tetris.shared.commands.CommandsAPI;
 import ru.hse.germandilio.tetris.server.clienthandling.CommandSender;
 import ru.hse.germandilio.tetris.server.clienthandling.Connection;
 import ru.hse.germandilio.tetris.server.generator.BricksRandomGenerator;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class ServerGameManager implements GameManager {
     private final int maxUsersNumber;
@@ -18,21 +18,17 @@ public class ServerGameManager implements GameManager {
     private int currentUsersCount;
     private BricksRandomGenerator brickGenerator;
 
+    private GameSessionsDatabase gameSessionsDatabase;
+
     public ServerGameManager(int usersNumber, long maxSessionTime) {
         this.maxUsersNumber = usersNumber;
         this.maxSessionTime = maxSessionTime;
+
+        gameSessionsDatabase = new GameSessionsDatabase();
     }
 
     public int getMaxUsersNumber() {
         return maxUsersNumber;
-    }
-
-    public long getMaxSessionTime() {
-        return maxSessionTime;
-    }
-
-    public int getCurrentUsersCount() {
-        return currentUsersCount;
     }
 
     @Override
@@ -51,9 +47,6 @@ public class ServerGameManager implements GameManager {
     @Override
     public synchronized void setName(Connection client, String name) {
         client.setName(name);
-
-        // TODO replace
-        System.out.println("Получено имя клиента: " + name);
     }
 
     @Override
@@ -76,7 +69,8 @@ public class ServerGameManager implements GameManager {
         var opponent = getOpponent(client);
         if (opponent == null) {
             // single mode game
-            String command = CommandsAPI.buildCommand(CommandsAPI.START_GAME_SINGLE,
+            String command = CommandsAPI.buildCommand(CommandsAPI.START_GAME,
+                    "",
                     Long.toString(maxSessionTime));
             handler.sendCommand(command);
         } else {
@@ -95,9 +89,6 @@ public class ServerGameManager implements GameManager {
             handler.sendCommand(commandToClient);
             opponentHandler.sendCommand(commandToOpponent);
         }
-
-        // TODO replace
-        System.out.println("Отправлено начало игры игроку с именем: " + client.getName());
     }
 
     @Override
@@ -148,8 +139,7 @@ public class ServerGameManager implements GameManager {
             opponentHandler.sendCommand(commandToOpponent);
         }
 
-        //TODO replace
-        System.out.println("Отправляю игрокам конец игры");
+        clearGameSessionResults();
     }
 
     @Override
@@ -157,9 +147,6 @@ public class ServerGameManager implements GameManager {
         var handler = userConnections.get(client);
         String command = CommandsAPI.buildCommand(CommandsAPI.WAITING_FOR_NEW_GAME);
         handler.sendCommand(command);
-
-        // TODO replace
-        System.out.println("Отправлено ожидание начала игры игроку с именем: " + client.getName());
     }
 
     @Override
@@ -167,9 +154,6 @@ public class ServerGameManager implements GameManager {
         var handler = userConnections.get(client);
         String command = CommandsAPI.buildCommand(CommandsAPI.WAITING_FOR_END_GAME);
         handler.sendCommand(command);
-
-        // TODO replace
-        System.out.println("Отправлено ожидание конца игры игроку с именем: " + client.getName());
     }
 
     @Override
@@ -184,9 +168,6 @@ public class ServerGameManager implements GameManager {
         var opponentHandler = userConnections.get(opponent);
         opponentHandler.sendCommand(command);
 
-        // TODO replace
-        System.out.println("Отправлен конец игры без результатов игроку с именем: " + opponent.getName());
-
         try {
             opponentHandler.close();
         } catch (Exception ex) {
@@ -196,9 +177,9 @@ public class ServerGameManager implements GameManager {
 
     @Override
     public synchronized void sendNextBrick(Connection client, int indexInSequence) {
-        // TODO replace
         if (brickGenerator == null) {
-            System.out.println("Не могу отправить брик потому что не начата игра.");
+            System.out.println("Brick generator is null");
+            return;
         }
 
         var handler = userConnections.get(client);
@@ -213,17 +194,49 @@ public class ServerGameManager implements GameManager {
     @Override
     public synchronized void saveGameSessionResults(Connection client) {
         // dataProvider
+        try {
+            gameSessionsDatabase.saveSession(client);
+        } catch (RuntimeException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Override
     public synchronized void getTopSessions(Connection client, int topNumber) {
+        if (topNumber <= 0) return;
+
         // dataProvider
+        try {
+            var results = gameSessionsDatabase.getTopResults(topNumber);
+
+            // prepare arguments
+            String[] arguments = new String[4 * results.size() + 1];
+            // add size of list
+            arguments[0] = Integer.toString(results.size());
+            for (int i = 0; i < results.size(); i++) {
+                var result = results.get(i);
+                int offset = i * 4;
+
+                arguments[offset + 1] = replaceWhiteSpaces(result.getPlayerName());
+                // end time (LocalDateTime) in UTC+0
+                arguments[offset + 2] = result.getEndGameTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                // moves count
+                arguments[offset + 3] = Integer.toString(result.getMovesCount());
+                // game duration in seconds
+                arguments[offset + 4] = Integer.toString(result.getGameSessionDuration().toSecondOfDay());
+            }
+
+            // send results to client
+            String command = CommandsAPI.buildCommand(CommandsAPI.TOP_RESULTS, arguments);
+            var handler = userConnections.get(client);
+            handler.sendCommand(command);
+
+        } catch (RuntimeException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     private synchronized Connection getOpponent(Connection user) {
-        //TODO replace
-        assert user != null;
-
         if (currentUsersCount == 1) {
             return null;
         }
@@ -256,5 +269,13 @@ public class ServerGameManager implements GameManager {
 
     private String replaceWhiteSpaces(String string) {
         return string.replaceAll(" ", "%20");
+    }
+
+
+    private void clearGameSessionResults() {
+        for (var entry : userConnections.entrySet()) {
+            var connection = entry.getKey();
+            connection.reset();
+        }
     }
 }

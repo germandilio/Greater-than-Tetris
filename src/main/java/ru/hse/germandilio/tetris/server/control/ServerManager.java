@@ -9,7 +9,11 @@ import java.util.Scanner;
 import static ru.hse.germandilio.tetris.server.Server.DEFAULT_PORT;
 
 public class ServerManager {
+    public final static boolean LOG_INPUT_COMMANDS = false;
+    public final static boolean LOG_OUTPUT_COMMANDS = false;
+
     private static final String QUIT_COMMAND_LOWER = "quit";
+
     private final Scanner scanner;
     private final Server server;
 

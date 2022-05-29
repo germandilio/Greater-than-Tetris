@@ -26,14 +26,19 @@ public class TetrisApplication extends Application {
 
             stage.setOnCloseRequest((windowEvent) -> {
                 try {
+                    // close listening thread and close socket
                     manager.close();
                     Platform.exit();
+                    System.exit(0);
                 } catch (Exception ex) {
-                    System.out.println("Some errors on closing application accuars");
+                    System.out.println("Some errors on closing application has been appeared");
+                    Platform.exit();
+                    System.exit(0);
                 }
             });
 
             manager.launch();
+            // prompt for registration on start
             manager.registration();
 
         } catch(Exception ex) {

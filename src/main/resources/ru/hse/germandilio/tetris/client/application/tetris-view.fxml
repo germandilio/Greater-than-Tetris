@@ -20,8 +20,11 @@
             </center>
         </BorderPane>
     </center>
-    <right>
+    <left>
         <VBox prefHeight="501.0" prefWidth="270.0" style="-fx-spacing: 10; -fx-padding: 10;" BorderPane.alignment="CENTER">
+            <HBox prefHeight="4.0" prefWidth="292.0" style="-fx-padding: 20;">
+                <Text fx:id="status" fill="#ff0101" text="Ожидание партнера" textAlignment="CENTER" wrappingWidth="251.87939453125" />
+            </HBox>
             <HBox prefHeight="11.0" prefWidth="292.0" style="-fx-padding: 0;">
                 <children>
                     <Text text="Ваше имя: " textAlignment="CENTER" wrappingWidth="141.07421875" />
@@ -48,7 +51,7 @@
             </HBox>
             <HBox prefHeight="46.0" prefWidth="292.0" style="-fx-padding: 20;">
                 <children>
-                    <Button fx:id="startStopButton" alignment="CENTER" onMouseClicked="#onGameStartStopClick" prefHeight="32.0" prefWidth="231.0" text="Начать игру">
+                    <Button fx:id="startStopButton" alignment="CENTER" onMouseClicked="#onGameStartStopClick" prefHeight="24.0" prefWidth="123.0" text="Начать игру">
                         <opaqueInsets>
                             <Insets />
                         </opaqueInsets>
@@ -57,9 +60,16 @@
                         </font>
                     </Button>
                 </children>
-            </HBox>
-            <HBox prefHeight="4.0" prefWidth="292.0" style="-fx-padding: 20;">
-                <Text fx:id="status" fill="#ff0101" text="Ожидание партнера" textAlignment="CENTER" wrappingWidth="251.87939453125" />
+                <children>
+                    <Button fx:id="top10Button" alignment="CENTER" onMouseClicked="#onTop10ResultClick" prefHeight="24.0" prefWidth="123.0" text="ТОП 10">
+                        <opaqueInsets>
+                            <Insets />
+                        </opaqueInsets>
+                        <font>
+                            <Font name="Arial" size="13.0" />
+                        </font>
+                    </Button>
+                </children>
             </HBox>
             <Text text="Следующая фигура:" textAlignment="CENTER" wrappingWidth="251.87939453125" />
             <BorderPane prefHeight="106.0" prefWidth="261.0" style="-fx-border-color: #000000; -fx-border-width: 1;">
@@ -71,5 +81,5 @@
                 <Insets />
             </opaqueInsets>
         </VBox>
-    </right>
+    </left>
 </BorderPane>

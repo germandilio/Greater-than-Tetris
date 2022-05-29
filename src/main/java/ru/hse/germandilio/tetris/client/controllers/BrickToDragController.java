@@ -6,7 +6,7 @@ import javafx.scene.shape.Rectangle;
 import static ru.hse.germandilio.tetris.client.model.gameboard.GameBoard.BRICK_SIZE;
 
 
-public class BrickToDragController {
+public class BrickToDragController implements IReset {
     private final Rectangle[][] board;
     private final int boardSize = 3;
 
@@ -31,5 +31,15 @@ public class BrickToDragController {
 
     public int getBoardSize() {
         return boardSize;
+    }
+
+
+    @Override
+    public void reset() {
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                board[i][j].setFill(Color.TRANSPARENT);
+            }
+        }
     }
 }

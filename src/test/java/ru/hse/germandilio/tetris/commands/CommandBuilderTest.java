@@ -1,6 +1,7 @@
 package ru.hse.germandilio.tetris.commands;
 
 import org.junit.jupiter.api.Test;
+import ru.hse.germandilio.tetris.shared.commands.CommandBuilder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,11 +9,11 @@ class CommandBuilderTest {
 
     @Test
     void build() {
-        String command = "NAME";
-        var arg = "kpo";
+        String command = "STARTING_GAME";
+        var arg = "greenkrug";
         String stringCommand = new CommandBuilder().build(1, command, arg);
 
-        String expected = "NAME kpo";
+        String expected = "STARTING_GAME greenkrug";
 
         assertEquals(expected, stringCommand);
     }

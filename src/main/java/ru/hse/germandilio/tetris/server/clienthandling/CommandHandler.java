@@ -1,6 +1,6 @@
 package ru.hse.germandilio.tetris.server.clienthandling;
 
-import ru.hse.germandilio.tetris.commands.CommandsAPI;
+import ru.hse.germandilio.tetris.shared.commands.CommandsAPI;
 import ru.hse.germandilio.tetris.server.game.GameManager;
 
 import java.util.List;
