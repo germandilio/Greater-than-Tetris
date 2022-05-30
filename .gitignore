@@ -1,3 +1,8 @@
+# Custom for this application
+DERBY
+javadoc
+target
+
 # Compiled class file
 *.class
 

@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ru.hse.germandilio.tetris.client.controllers.GameManager;
 import ru.hse.germandilio.tetris.client.controllers.TetrisViewController;
+import ru.hse.germandilio.tetris.shared.commands.CommandsAPI;
 
 import java.io.IOException;
 
@@ -26,6 +27,9 @@ public class TetrisApplication extends Application {
 
             stage.setOnCloseRequest((windowEvent) -> {
                 try {
+                    String command = CommandsAPI.buildCommand(CommandsAPI.CLIENT_DISCONNECTED);
+                    manager.sendCommand(command);
+
                     // close listening thread and close socket
                     manager.close();
                     Platform.exit();

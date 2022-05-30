@@ -513,7 +513,7 @@ public class TetrisViewController {
         String clientStats = "Фигур: " + stats.getBricksPlaced() + ". Время в игре: "
                 + convertTime(stats.getGameSessionDuration()) + "\n";
 
-        alertToSetup.setHeaderText("Вы:\n" + clientStats);
+        alertToSetup.setHeaderText("Вы:\n" + clientStats+ "Победитель: " + stats.getName());
     }
 
     private void setupWithResultsAlert(Alert alertToSetup) {
@@ -558,6 +558,9 @@ public class TetrisViewController {
 
     private void exitApplication() {
         try {
+            String command = CommandsAPI.buildCommand(CommandsAPI.CLIENT_DISCONNECTED);
+            gameManager.sendCommand(command);
+
             gameManager.close();
         } catch (Exception ignored) {
         } finally {

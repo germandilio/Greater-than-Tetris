@@ -75,6 +75,8 @@ public class CommandHandler {
     private void clientQuit() {
         // send for opponent "end game opponent leave"
         serverGame.sendEndGameWithoutResults(connection);
+
+        serverGame.disconnectPlayer(connection);
     }
 
     private void getTop(List<String> arguments) {

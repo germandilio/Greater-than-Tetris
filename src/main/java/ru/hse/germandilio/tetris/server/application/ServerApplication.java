@@ -21,7 +21,7 @@ public class ServerApplication {
                 manager.launch();
 
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             } catch (IllegalArgumentException e) {
                 System.out.println("Wrong server configuration. Max clients should be 1 or 2" +
                         " and game duration greater than zero");
@@ -31,7 +31,7 @@ public class ServerApplication {
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 }

@@ -15,10 +15,10 @@ public class ServerGameManager implements GameManager {
 
     private final Map<Connection, CommandSender> userConnections = Collections.synchronizedMap(new HashMap<>());
 
-    private int currentUsersCount;
+    private volatile int currentUsersCount;
     private BricksRandomGenerator brickGenerator;
 
-    private GameSessionsDatabase gameSessionsDatabase;
+    private final GameSessionsDatabase gameSessionsDatabase;
 
     public ServerGameManager(int usersNumber, long maxSessionTime) {
         this.maxUsersNumber = usersNumber;
@@ -29,6 +29,10 @@ public class ServerGameManager implements GameManager {
 
     public int getMaxUsersNumber() {
         return maxUsersNumber;
+    }
+
+    public int getCurrentUsersCount() {
+        return currentUsersCount;
     }
 
     @Override
@@ -42,6 +46,12 @@ public class ServerGameManager implements GameManager {
         var connection = new Connection(currentUsersCount - 1);
         userConnections.put(connection, clientHandler);
         return connection;
+    }
+
+    @Override
+    public synchronized void disconnectPlayer(Connection client) {
+        userConnections.remove(client);
+        currentUsersCount--;
     }
 
     @Override
@@ -161,6 +171,7 @@ public class ServerGameManager implements GameManager {
         var opponent = getOpponent(client);
         if (opponent == null) {
             // in single mode the only one client leaves game.
+            clearGameSessionResults();
             return;
         }
 
@@ -169,7 +180,8 @@ public class ServerGameManager implements GameManager {
         opponentHandler.sendCommand(command);
 
         try {
-            opponentHandler.close();
+            userConnections.get(client).close();
+            clearGameSessionResults();
         } catch (Exception ex) {
             System.out.println("Crash on closing client handler. It will be shut down automatically.");
         }

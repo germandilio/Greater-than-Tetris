@@ -35,18 +35,22 @@ public class Server implements AutoCloseable {
             try(socket) {
                 ForkJoinPool executor = new ForkJoinPool();
 
-                // accept all client
-                for (int i = 0; i < serverGame.getMaxUsersNumber(); i++) {
+                // accept all clients
+                while (!socket.isClosed()) {
                     var acceptedSocket = socket.accept();
-                    var handler = new ClientHandler(acceptedSocket, serverGame);
 
-                    clients.add(handler);
-                    System.out.println("Client connected with InetAddress=" + acceptedSocket.getInetAddress());
+                    if (serverGame.getCurrentUsersCount() >= serverGame.getMaxUsersNumber()) {
+                        acceptedSocket.close();
+                    } else {
+                        var handler = new ClientHandler(acceptedSocket, serverGame);
 
-                    // execute handler in different thread
-                    executor.execute(handler);
+                        clients.add(handler);
+                        System.out.println("Client connected with InetAddress=" + acceptedSocket.getInetAddress());
+
+                        // execute handler in different thread
+                        executor.execute(handler);
+                    }
                 }
-
             } catch(IllegalArgumentException | IOException ex) {
                 System.out.println("Cannot accept clients. Server will shut down.");
             }

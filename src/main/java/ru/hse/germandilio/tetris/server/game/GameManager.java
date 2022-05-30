@@ -5,6 +5,7 @@ import ru.hse.germandilio.tetris.server.clienthandling.Connection;
 
 public interface GameManager {
     Connection playerConnected(CommandSender clientHandler);
+    void disconnectPlayer(Connection client);
 
     void setName(Connection client, String name);
 
