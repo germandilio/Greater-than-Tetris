@@ -2,6 +2,8 @@ package ru.hse.germandilio.tetris.server.clienthandling;
 
 import ru.hse.germandilio.tetris.client.controllers.IReset;
 
+import java.time.LocalDateTime;
+
 public class Connection implements IReset {
     private final int id;
 
@@ -10,6 +12,7 @@ public class Connection implements IReset {
     private String name;
     private long gameSessionDuration;
     private int brickPlaced;
+    private LocalDateTime endTime;
 
     private boolean hasEndedGame = false;
 
@@ -57,5 +60,15 @@ public class Connection implements IReset {
         gameSessionDuration = 0L;
         brickPlaced = 0;
         hasEndedGame = false;
+
+        endTime = null;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 }

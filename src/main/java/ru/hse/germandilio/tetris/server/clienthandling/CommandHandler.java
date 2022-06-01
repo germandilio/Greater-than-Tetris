@@ -1,11 +1,16 @@
 package ru.hse.germandilio.tetris.server.clienthandling;
 
-import ru.hse.germandilio.tetris.shared.commands.CommandsAPI;
 import ru.hse.germandilio.tetris.server.game.GameManager;
+import ru.hse.germandilio.tetris.shared.commands.CommandsAPI;
 
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class CommandHandler {
+    private static final ReentrantLock ENTRANCE_LOCK = new ReentrantLock();
+
     private final GameManager serverGame;
     private final Connection connection;
 
@@ -15,7 +20,7 @@ public class CommandHandler {
     }
 
     public void handle(CommandsAPI command, List<String> arguments) {
-        switch(command) {
+        switch (command) {
             case STARTING_GAME -> startingClientGame(arguments);
             case GET_NEXT_BRICK -> sendBrick(arguments);
             case LEAVE_GAME -> clientLeavingGame(arguments);
@@ -53,22 +58,31 @@ public class CommandHandler {
     }
 
     private void clientLeavingGame(List<String> arguments) {
-        // save client game session configuration
-        int brickPlaced = Integer.parseInt(arguments.get(0));
-        connection.setBrickPlaced(brickPlaced);
+        var endSessionDateTime = Instant.now().atZone(ZoneOffset.UTC).toLocalDateTime();
 
-        long duration = Long.parseLong(arguments.get(1));
-        connection.setGameSessionDuration(duration);
+        ENTRANCE_LOCK.lock();
+        try {
+            // save client game session configuration
+            int brickPlaced = Integer.parseInt(arguments.get(0));
+            connection.setBrickPlaced(brickPlaced);
 
-        // send waiting for end game
-        serverGame.sendWaitingEndGame(connection);
+            long duration = Long.parseLong(arguments.get(1));
+            connection.setGameSessionDuration(duration);
 
-        // save to database game session results
-        serverGame.saveGameSessionResults(connection);
+            connection.setEndTime(endSessionDateTime);
 
-        // if game ready to end send end_game on clients
-        if (serverGame.readyToEndGame()) {
-            serverGame.endGame(connection);
+            // send waiting for end game
+            serverGame.sendWaitingEndGame(connection);
+
+            // save to database game session results
+            serverGame.saveGameSessionResults(connection);
+
+            // if game ready to end send end_game on clients
+            if (serverGame.readyToEndGame()) {
+                serverGame.endGame(connection);
+            }
+        } finally {
+            ENTRANCE_LOCK.unlock();
         }
     }
 

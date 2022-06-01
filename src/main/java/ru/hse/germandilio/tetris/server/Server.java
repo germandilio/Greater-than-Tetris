@@ -32,7 +32,7 @@ public class Server implements AutoCloseable {
 
     public void launch() {
         new Thread(() -> {
-            try(socket) {
+            try (socket) {
                 ForkJoinPool executor = new ForkJoinPool();
 
                 // accept all clients
@@ -51,7 +51,7 @@ public class Server implements AutoCloseable {
                         executor.execute(handler);
                     }
                 }
-            } catch(IllegalArgumentException | IOException ex) {
+            } catch (IllegalArgumentException | IOException ex) {
                 System.out.println("Cannot accept clients. Server will shut down.");
             }
         }).start();

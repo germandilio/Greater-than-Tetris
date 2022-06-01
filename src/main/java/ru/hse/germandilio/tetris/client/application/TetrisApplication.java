@@ -45,7 +45,7 @@ public class TetrisApplication extends Application {
             // prompt for registration on start
             manager.registration();
 
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             System.out.println("Poo-pi-poop. Something went wrong.");
         }
     }

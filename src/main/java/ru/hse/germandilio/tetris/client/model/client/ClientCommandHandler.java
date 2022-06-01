@@ -1,11 +1,13 @@
 package ru.hse.germandilio.tetris.client.model.client;
 
 import ru.hse.germandilio.tetris.client.controllers.ActionProvider;
-import ru.hse.germandilio.tetris.client.model.ViewGameResult;
 import ru.hse.germandilio.tetris.client.model.GameSessionStats;
+import ru.hse.germandilio.tetris.client.model.ViewGameResult;
 import ru.hse.germandilio.tetris.shared.commands.CommandsAPI;
 
-import java.time.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +24,7 @@ public class ClientCommandHandler {
     }
 
     public void handle(CommandsAPI command, List<String> arguments) {
-        switch(command) {
+        switch (command) {
             case CONNECTED -> hasConnected();
             case WAITING_FOR_NEW_GAME -> waitForNewGame();
             case START_GAME -> startGame(arguments);
@@ -117,6 +119,7 @@ public class ClientCommandHandler {
 
     /**
      * Convert {@code String} represented brick to boolean matrix.
+     *
      * @param brickString {@code String} represented brick
      * @return Matrix 3x3 of booleans.
      */
@@ -134,6 +137,7 @@ public class ClientCommandHandler {
 
     /**
      * Replace all internal symbols to white spaces.
+     *
      * @param string {@code String} where replace.
      * @return {@code String} natural view.
      */

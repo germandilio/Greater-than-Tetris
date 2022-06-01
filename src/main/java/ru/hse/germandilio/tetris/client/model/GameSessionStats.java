@@ -126,5 +126,7 @@ public class GameSessionStats implements IReset {
         opponentGameDuration = 0L;
         opponentBricksPlaced = 0;
         winnerName = null;
+
+        hasEndedGame = false;
     }
 }

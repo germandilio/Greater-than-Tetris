@@ -1,13 +1,15 @@
 package ru.hse.germandilio.tetris.server.game;
 
-import ru.hse.germandilio.tetris.server.database.GameSessionsDatabase;
-import ru.hse.germandilio.tetris.shared.commands.CommandsAPI;
 import ru.hse.germandilio.tetris.server.clienthandling.CommandSender;
 import ru.hse.germandilio.tetris.server.clienthandling.Connection;
+import ru.hse.germandilio.tetris.server.database.GameSessionsDatabase;
 import ru.hse.germandilio.tetris.server.generator.BricksRandomGenerator;
+import ru.hse.germandilio.tetris.shared.commands.CommandsAPI;
 
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ServerGameManager implements GameManager {
     private final int maxUsersNumber;
@@ -63,7 +65,7 @@ public class ServerGameManager implements GameManager {
     public boolean readyToStartGame() {
         boolean readyForGame = true;
 
-        for(var entry : userConnections.entrySet()) {
+        for (var entry : userConnections.entrySet()) {
             var key = entry.getKey();
             readyForGame &= key.startedGame();
         }
@@ -105,7 +107,7 @@ public class ServerGameManager implements GameManager {
     public boolean readyToEndGame() {
         boolean readyEndGame = true;
 
-        for(var entry : userConnections.entrySet()) {
+        for (var entry : userConnections.entrySet()) {
             var key = entry.getKey();
             readyEndGame &= key.endedGame();
         }

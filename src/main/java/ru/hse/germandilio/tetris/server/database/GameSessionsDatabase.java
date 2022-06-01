@@ -4,9 +4,7 @@ import ru.hse.germandilio.tetris.server.clienthandling.Connection;
 import ru.hse.germandilio.tetris.shared.GameResult;
 
 import java.sql.SQLException;
-import java.time.Instant;
 import java.time.LocalTime;
-import java.time.ZoneOffset;
 import java.util.List;
 
 public class GameSessionsDatabase {
@@ -24,11 +22,10 @@ public class GameSessionsDatabase {
 
     public void saveSession(Connection client) {
         // Creating game result object
-        var endSessionDateTime = Instant.now().atZone(ZoneOffset.UTC).toLocalDateTime();
         var gameDuration = LocalTime.ofSecondOfDay(client.getGameSessionDuration());
 
         try {
-            var sessionResult = new GameResult(client.getName(), endSessionDateTime, client.getBrickPlaced(), gameDuration);
+            var sessionResult = new GameResult(client.getName(), client.getEndTime(), client.getBrickPlaced(), gameDuration);
             gameSessionsDataProvider.save(sessionResult);
         } catch (SQLException e) {
             throw new RuntimeException("Cannot save game session result", e);

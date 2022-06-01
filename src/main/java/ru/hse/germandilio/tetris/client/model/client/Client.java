@@ -2,8 +2,8 @@ package ru.hse.germandilio.tetris.client.model.client;
 
 import ru.hse.germandilio.tetris.client.controllers.ActionProvider;
 import ru.hse.germandilio.tetris.client.model.GameSessionStats;
-import ru.hse.germandilio.tetris.shared.commands.CommandsAPI;
 import ru.hse.germandilio.tetris.server.clienthandling.CommandSender;
+import ru.hse.germandilio.tetris.shared.commands.CommandsAPI;
 
 import java.io.*;
 import java.net.Socket;

@@ -51,7 +51,7 @@ public enum CommandsAPI {
      *
      * @apiNote SERVER -> CLIENT
      * @implNote No arguments.
-     * */
+     */
     CONNECTED(0),
     /**
      * Waiting for new game start.

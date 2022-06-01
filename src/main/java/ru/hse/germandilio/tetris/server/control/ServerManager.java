@@ -32,7 +32,7 @@ public class ServerManager {
         } catch (IllegalStateException ex) {
             System.out.println(ex.getMessage());
             return;
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             System.out.println("Poo-pi-poop. Something went wrong.");
             return;
         }

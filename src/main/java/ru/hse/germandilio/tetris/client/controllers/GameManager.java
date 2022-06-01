@@ -1,12 +1,12 @@
 package ru.hse.germandilio.tetris.client.controllers;
 
 import javafx.application.Platform;
-import ru.hse.germandilio.tetris.client.model.ViewGameResult;
 import ru.hse.germandilio.tetris.client.model.GameSessionStats;
+import ru.hse.germandilio.tetris.client.model.ViewGameResult;
 import ru.hse.germandilio.tetris.client.model.client.Client;
 import ru.hse.germandilio.tetris.client.model.gameboard.GameBoard;
-import ru.hse.germandilio.tetris.shared.commands.CommandsAPI;
 import ru.hse.germandilio.tetris.server.clienthandling.CommandSender;
+import ru.hse.germandilio.tetris.shared.commands.CommandsAPI;
 
 import java.net.UnknownHostException;
 import java.util.List;

@@ -149,13 +149,7 @@ public class TetrisViewController {
                 currentSessionStopwatch.setText(convertTime(seconds));
 
                 // send leave game command
-                String bricksPlaced = Integer.toString(stats.getBricksPlaced());
-                String sessionTime = Long.toString(stats.getGameSessionDuration());
-                String command = CommandsAPI.buildCommand(CommandsAPI.LEAVE_GAME,
-                        bricksPlaced,
-                        sessionTime);
-
-                gameManager.sendCommand(command);
+                endGame();
             }
         };
         timer.schedule(closeSession, time * 1000);
@@ -513,7 +507,7 @@ public class TetrisViewController {
         String clientStats = "Фигур: " + stats.getBricksPlaced() + ". Время в игре: "
                 + convertTime(stats.getGameSessionDuration()) + "\n";
 
-        alertToSetup.setHeaderText("Вы:\n" + clientStats+ "Победитель: " + stats.getName());
+        alertToSetup.setHeaderText("Вы:\n" + clientStats + "Победитель: " + stats.getName());
     }
 
     private void setupWithResultsAlert(Alert alertToSetup) {

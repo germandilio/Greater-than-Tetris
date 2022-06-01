@@ -21,8 +21,7 @@ public class ConsoleHandler implements InputHandler {
 
             if (scanner.hasNextInt()) {
                 amount = scanner.nextInt();
-            }
-            else if (scanner.hasNext()){
+            } else if (scanner.hasNext()) {
                 scanner.next();
                 amount = -1;
             } else {
@@ -30,7 +29,8 @@ public class ConsoleHandler implements InputHandler {
             }
         }
 
-        return amount;    }
+        return amount;
+    }
 
     @Override
     public long getTimeout() {
@@ -41,8 +41,7 @@ public class ConsoleHandler implements InputHandler {
 
             if (scanner.hasNextLong()) {
                 timeout = scanner.nextLong();
-            }
-            else if (scanner.hasNext()){
+            } else if (scanner.hasNext()) {
                 scanner.next();
                 timeout = -1;
             } else {
