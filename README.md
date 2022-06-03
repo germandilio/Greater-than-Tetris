@@ -1,5 +1,5 @@
 # Greater than Tetris
-Libraries: JDK 17, JavaFX, Apache Derby.
+Libraries: JDK 17, JavaFX, Apache Derby and JUnit 5.
 
 ## Client-server application based on Sockets.
 Server configuration should contain:
