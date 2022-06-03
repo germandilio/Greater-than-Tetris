@@ -1,4 +1,6 @@
 # Greater than Tetris
+Client-server communication based on sockets and string commands without any high-level libruaries.
+
 Libraries: JDK 17, JavaFX, Apache Derby and JUnit 5.
 
 ## Client-server application based on Sockets.
