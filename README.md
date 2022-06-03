@@ -1,1 +1,11 @@
-# Greater-than-Tetris
+# Greater than Tetris
+Libraries: JDK 17, JavaFX, Apache Derby.
+
+## Client-server application based on Sockets.
+Server configuration should contain:
+ - the number of users for game session (1 or 2),
+ - timeout - session time after which the game will be automatically stopped.
+
+Clients can play the game with/without opponent and view top 10 results.
+
+Server generates one brick sequence for all clients, providing honest competition.
