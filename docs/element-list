@@ -1,0 +1,16 @@
+module:ru.hse.germandilio.tetris.tetris
+ru.hse.germandilio.tetris.client.application
+ru.hse.germandilio.tetris.client.controllers
+ru.hse.germandilio.tetris.client.model
+ru.hse.germandilio.tetris.client.model.client
+ru.hse.germandilio.tetris.client.model.gameboard
+ru.hse.germandilio.tetris.server
+ru.hse.germandilio.tetris.server.application
+ru.hse.germandilio.tetris.server.bricks
+ru.hse.germandilio.tetris.server.clienthandling
+ru.hse.germandilio.tetris.server.control
+ru.hse.germandilio.tetris.server.database
+ru.hse.germandilio.tetris.server.game
+ru.hse.germandilio.tetris.server.generator
+ru.hse.germandilio.tetris.shared
+ru.hse.germandilio.tetris.shared.commands

@@ -1,0 +1,1 @@
+moduleSearchIndex = [{"l":"ru.hse.germandilio.tetris.tetris"}];updateSearchResults();
