@@ -1,5 +1,5 @@
 # Greater than Tetris
-Client-server communication based on sockets and string commands without any high-level libruaries.
+Client-server communication based on sockets and string commands without any high-level libraries.
 
 Libraries: JDK 17, JavaFX, Apache Derby and JUnit 5.
 
@@ -11,3 +11,14 @@ Server configuration should contain:
 Clients can play the game with/without opponent and view top 10 results.
 
 Server generates one brick sequence for all clients, providing honest competition.
+
+## Gameplay ##
+After registration, player can start the game.
+(If you are playing with partner, you should waiting until he also started te game.)
+
+### Core game mechanic ###
+New generated brick will be presented in left down corner. You can drag & drop it to place on game board.
+
+### Winner ###
+You need to place more bricks on a board than your partner to be a winner. If equles, you need to finish you session in a shortest time.
+
