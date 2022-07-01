@@ -3,7 +3,7 @@ package ru.hse.germandilio.tetris.commands;
 import org.junit.jupiter.api.Test;
 import ru.hse.germandilio.tetris.shared.commands.CommandBuilder;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CommandBuilderTest {
 

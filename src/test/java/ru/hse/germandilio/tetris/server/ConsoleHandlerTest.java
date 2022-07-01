@@ -25,7 +25,6 @@ class ConsoleHandlerTest {
     }
 
 
-
     @Test
     void getTimeout() {
         Scanner scanner = new Scanner("100");

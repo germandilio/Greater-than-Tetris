@@ -6,11 +6,8 @@ import ru.hse.germandilio.tetris.shared.GameResult;
 
 import java.sql.SQLException;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class JdbcDataProviderTest {
     private final String databaseUrl = "jdbc:derby:memory:game-session-results;create=true";

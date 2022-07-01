@@ -36,7 +36,6 @@ public class ClientHandler implements Runnable, AutoCloseable, CommandSender {
 
             // handling input
             handlingInput();
-
         } catch (Exception e) {
             System.out.println("Can't close socket");
         }

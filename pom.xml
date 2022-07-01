@@ -12,6 +12,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <javafx.version>17.0.1</javafx.version>
         <derby.version>10.15.2.0</derby.version>
         <junit.version>5.8.1</junit.version>
     </properties>
@@ -20,12 +21,12 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>17.0.1</version>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>17.0.1</version>
+            <version>${javafx.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.derby/derby -->
