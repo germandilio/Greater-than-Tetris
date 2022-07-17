@@ -24,7 +24,7 @@ public class BricksRandomGenerator {
      * Get next brick in sequence by index.
      *
      * @param indexInSequence index
-     * @return Boolean matrix (brick). For converting to String use {@code convertToString}.
+     * @return Boolean matrix (brick). For converting to String use {@link #convertToString(boolean[][])}.
      */
     public synchronized boolean[][] getBrick(int indexInSequence) {
         if (indexInSequence < generatedBrickSequence.size() && indexInSequence >= 0) {
@@ -36,7 +36,7 @@ public class BricksRandomGenerator {
     /**
      * Converts brick matrix of booleans to string representation fo zeros and ones.
      *
-     * @param brick
+     * @param brick brick matrix
      * @return String representation (ex. 1 0 1 0 0 0 0 ... 1)
      */
     public String convertToString(boolean[][] brick) {

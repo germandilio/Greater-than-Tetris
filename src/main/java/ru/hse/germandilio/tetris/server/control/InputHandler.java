@@ -4,14 +4,14 @@ public interface InputHandler {
     /**
      * Get max number of clients can connect to server.
      *
-     * @return int
+     * @return {@link Integer}
      */
     int getClientsNumber();
 
     /**
      * Get timeout when all clients will be notified with predefined event.
      *
-     * @return long
+     * @return {@link Long}
      */
     long getTimeout();
 }

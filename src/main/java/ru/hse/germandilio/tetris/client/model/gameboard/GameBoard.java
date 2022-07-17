@@ -2,10 +2,10 @@ package ru.hse.germandilio.tetris.client.model.gameboard;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import ru.hse.germandilio.tetris.client.controllers.IReset;
+import ru.hse.germandilio.tetris.client.controllers.Reset;
 
 
-public class GameBoard implements IReset {
+public class GameBoard implements Reset {
     private boolean[][] gameBoard;
     private final Rectangle[][] displayBoard;
 

@@ -233,7 +233,7 @@ public class ServerGameManager implements GameManager {
 
                 arguments[offset + 1] = replaceWhiteSpaces(result.getPlayerName());
                 // end time (LocalDateTime) in UTC+0
-                arguments[offset + 2] = result.getEndGameTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                arguments[offset + 2] = result.getEndGameTimeUTC0().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
                 // moves count
                 arguments[offset + 3] = Integer.toString(result.getMovesCount());
                 // game duration in seconds

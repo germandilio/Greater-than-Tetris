@@ -1,10 +1,15 @@
 package ru.hse.germandilio.tetris.server.clienthandling;
 
-import ru.hse.germandilio.tetris.client.controllers.IReset;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import ru.hse.germandilio.tetris.client.controllers.Reset;
 
 import java.time.LocalDateTime;
 
-public class Connection implements IReset {
+@Getter
+@Setter
+public class Connection implements Reset {
     private final int id;
 
     // game session properties
@@ -14,35 +19,21 @@ public class Connection implements IReset {
     private int brickPlaced;
     private LocalDateTime endTime;
 
-    private boolean hasEndedGame = false;
+    @Setter(AccessLevel.NONE)
+    @Getter(AccessLevel.NONE)
+    private boolean endedGame = false;
 
     public Connection(int id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public long getGameSessionDuration() {
-        return gameSessionDuration;
-    }
-
-    public int getBrickPlaced() {
-        return brickPlaced;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void setGameSessionDuration(long gameSessionDuration) {
-        hasEndedGame = true;
+        endedGame = true;
         this.gameSessionDuration = gameSessionDuration;
     }
 
     public void setBrickPlaced(int brickPlaced) {
-        hasEndedGame = true;
+        endedGame = true;
         this.brickPlaced = brickPlaced;
     }
 
@@ -51,7 +42,7 @@ public class Connection implements IReset {
     }
 
     public boolean endedGame() {
-        return hasEndedGame;
+        return endedGame;
     }
 
     @Override
@@ -59,16 +50,8 @@ public class Connection implements IReset {
         name = null;
         gameSessionDuration = 0L;
         brickPlaced = 0;
-        hasEndedGame = false;
+        endedGame = false;
 
         endTime = null;
-    }
-
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
     }
 }

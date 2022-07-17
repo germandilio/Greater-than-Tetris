@@ -11,21 +11,21 @@ public enum CommandsAPI {
      * Send when client wants to start new game with "name" argument.
      *
      * @apiNote CLIENT -> SERVER
-     * @implNote Arguments: {@code String} name.
+     * @implNote Arguments: {@link String} name.
      */
     STARTING_GAME(1),
     /**
      * Prompt for new brick.
      *
      * @apiNote CLIENT -> SERVER
-     * @implNote Arguments: {@code Integer} index of next brick.
+     * @implNote Arguments: {@link Integer} index of next brick.
      */
     GET_NEXT_BRICK(1),
     /**
      * Client ending game.
      *
      * @apiNote CLIENT -> SERVER
-     * @implNote Arguments: {@code Integer} brick placed, {@code Long} game session duration (in seconds).
+     * @implNote Arguments: {@link Integer} brick placed, {@link Long} game session duration (in seconds).
      */
     LEAVE_GAME(2),
     /**
@@ -39,7 +39,7 @@ public enum CommandsAPI {
      * Get TOP (param) game sessions results.
      *
      * @apiNote CLIENT -> SERVER
-     * @implNote Arguments: {@code Integer} number for TOP (ex. TOP 10 - param = 10).
+     * @implNote Arguments: {@link Integer} number for TOP (ex. TOP 10 - param = 10).
      */
     GET_TOP(1),
 
@@ -64,14 +64,14 @@ public enum CommandsAPI {
      * Starts game sessions on clients.
      *
      * @apiNote SERVER -> CLIENT
-     * @implNote Arguments: {@code String} opponent name, {@code Long} max game session time.
+     * @implNote Arguments: {@link String} opponent name, {@link Long} max game session time.
      */
     START_GAME(2),
     /**
      * Passing new generated brick as parameter.
      *
      * @apiNote SERVER -> CLIENT
-     * @implNote Arguments: {@code String} brick matrix.
+     * @implNote Arguments: {@link String} brick matrix.
      */
     NEXT_BRICK(1),
     /**
@@ -85,8 +85,8 @@ public enum CommandsAPI {
      * End game on clients.
      *
      * @apiNote SERVER -> CLIENT
-     * @implNote Arguments: {@code String} opponent name, {@code Long} opponent time, {@code Integer} opponent bricks placed,
-     * {@code String} winnerName.
+     * @implNote Arguments: {@link String} opponent name, {@link Long} opponent time, {@link Integer} opponent bricks placed,
+     * {@link String} winnerName.
      */
     END_GAME(4),
     /**
@@ -107,9 +107,9 @@ public enum CommandsAPI {
      * Results of top 10 game sessions.
      *
      * @apiNote SERVER -> CLIENT
-     * @implNote Arguments: {@code String} number of game sessions, ... parameters by each game session in format:
-     * {@code String} player name, {@code LocalDateTime}  end session date and time, {@code Integer} moves count,
-     * {@code Long} session time in seconds.
+     * @implNote Arguments: {@link String} number of game sessions, ... parameters by each game session in format:
+     * {@link String} player name, {@link java.time.LocalDateTime}  end session date and time, {@link Integer} moves count,
+     * {@link Long} session time in seconds.
      */
     TOP_RESULTS(1);
 
@@ -123,10 +123,10 @@ public enum CommandsAPI {
     // !----------------------- UTILITIES -----------------------!
 
     /**
-     * Get command type by {@code String} representation of type.
+     * Get command type by {@link String} representation of type.
      *
-     * @param stringCommand {@code String} representation
-     * @return {@code CommandsAPI}
+     * @param stringCommand {@link String} representation
+     * @return {@link CommandsAPI}
      */
     public static CommandsAPI getCommandType(String stringCommand) throws IOException {
         return switch (stringCommand) {
@@ -152,11 +152,11 @@ public enum CommandsAPI {
     /**
      * Retrieves arguments from commands based on their type (internal number of arguments).
      *
-     * @param command {@code Command} command type.
+     * @param command {@link CommandsAPI} command type.
      * @param input   String representation of command with arguments.
      *                IMPORTANT: Input string SHOULD contain command name.
      * @return List of String represented arguments
-     * @throws IllegalArgumentException If number of argument is lower than required by {@code CommandsAPI} type.
+     * @throws IllegalArgumentException If number of argument is lower than required by {@link CommandsAPI} type.
      */
     public static List<String> getArguments(CommandsAPI command, String input) {
         var param = input.split(" ");
@@ -173,11 +173,11 @@ public enum CommandsAPI {
     }
 
     /**
-     * Build command by provided type and {@code String} represented arguments.
+     * Build command by provided type and {@link String} represented arguments.
      *
-     * @param command    {@code CommandsAPI} command type.
-     * @param parameters {@code String} represented arguments
-     * @return {@code String} mounted command.
+     * @param command    {@link CommandsAPI} command type.
+     * @param parameters {@link String} represented arguments
+     * @return {@link String} mounted command.
      * @throws IllegalArgumentException if number of provided arguments mismatching with internal metadata.
      */
     public static String buildCommand(CommandsAPI command, String... parameters) {

@@ -6,14 +6,14 @@ public interface Brick {
     /**
      * Internal matrix that represents 3x3 brick.
      *
-     * @return List of all brick rotations.
+     * @return {@link List} of all brick rotations.
      */
     List<boolean[][]> getMatrix();
 
     /**
      * Number of available rotations.
      *
-     * @return {@code Integer} numbner.
+     * @return {@link Integer} number.
      */
     int getRotationsCount();
 }

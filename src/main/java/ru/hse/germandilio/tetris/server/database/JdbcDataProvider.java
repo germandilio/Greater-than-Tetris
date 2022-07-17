@@ -34,7 +34,7 @@ public class JdbcDataProvider implements DataProvider {
              PreparedStatement statement = connection.prepareStatement("INSERT INTO GAME_RESULTS (Login, SessionEndTime, MovesCount, GameTime) VALUES (?, ?, ?, ?)")) {
             // set top parameter
             statement.setString(1, gameResult.getPlayerName());
-            statement.setTimestamp(2, Timestamp.from(gameResult.getEndGameTime().toInstant(ZoneOffset.UTC)));
+            statement.setTimestamp(2, Timestamp.from(gameResult.getEndGameTimeUTC0().toInstant(ZoneOffset.UTC)));
             statement.setInt(3, gameResult.getMovesCount());
             statement.setTime(4, Time.valueOf(gameResult.getGameSessionDuration()));
 

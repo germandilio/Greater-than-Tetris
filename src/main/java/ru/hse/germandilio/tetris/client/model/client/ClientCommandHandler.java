@@ -59,7 +59,7 @@ public class ClientCommandHandler {
 
     private void endGameWithoutOpponentResults() {
         // set reason of end game
-        gameStats.setOpponentLeave(true);
+        gameStats.setOpponentLeaveGame(true);
 
         // show end game
         gameManager.endGame();
@@ -67,7 +67,7 @@ public class ClientCommandHandler {
 
     private void endGame(List<String> arguments) {
         // set reason of end game
-        gameStats.setOpponentLeave(false);
+        gameStats.setOpponentLeaveGame(false);
 
         // save opponent name
         String opponentName = toNaturalView(arguments.get(0));
@@ -118,9 +118,9 @@ public class ClientCommandHandler {
     }
 
     /**
-     * Convert {@code String} represented brick to boolean matrix.
+     * Convert {@link String} represented brick to boolean matrix.
      *
-     * @param brickString {@code String} represented brick
+     * @param brickString {@link String} represented brick
      * @return Matrix 3x3 of booleans.
      */
     private boolean[][] convertBrick(char[] brickString) {
@@ -138,8 +138,8 @@ public class ClientCommandHandler {
     /**
      * Replace all internal symbols to white spaces.
      *
-     * @param string {@code String} where replace.
-     * @return {@code String} natural view.
+     * @param string {@link String} where replace.
+     * @return {@link String} natural view.
      */
     private String toNaturalView(String string) {
         return string.replaceAll("%20", " ");

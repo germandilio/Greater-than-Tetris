@@ -1,11 +1,14 @@
 package ru.hse.germandilio.tetris.shared;
 
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Objects;
 
+@Getter
 public class GameResult {
     private final String playerName;
     private final LocalDateTime endGameTimeUTC0;
@@ -20,11 +23,7 @@ public class GameResult {
         this.gameSessionDuration = gameSessionDuration;
     }
 
-    public String getPlayerName() {
-        return playerName;
-    }
-
-    public LocalDateTime getEndGameTime() {
+    public LocalDateTime getEndGameTimeUTC0() {
         // convert to UTC time zone
         return endGameTimeUTC0
                 .toInstant(ZoneOffset.UTC)
@@ -38,14 +37,6 @@ public class GameResult {
                 .toInstant(ZoneOffset.UTC)
                 .atZone(zoneId)
                 .toLocalDateTime();
-    }
-
-    public int getMovesCount() {
-        return movesCount;
-    }
-
-    public LocalTime getGameSessionDuration() {
-        return gameSessionDuration;
     }
 
     @Override

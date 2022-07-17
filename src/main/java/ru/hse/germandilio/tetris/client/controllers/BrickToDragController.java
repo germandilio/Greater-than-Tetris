@@ -6,7 +6,7 @@ import javafx.scene.shape.Rectangle;
 import static ru.hse.germandilio.tetris.client.model.gameboard.GameBoard.BRICK_SIZE;
 
 
-public class BrickToDragController implements IReset {
+public class BrickToDragController implements Reset {
     private final Rectangle[][] board;
     private final int boardSize = 3;
 

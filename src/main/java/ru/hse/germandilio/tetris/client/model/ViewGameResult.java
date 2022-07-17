@@ -1,5 +1,8 @@
 package ru.hse.germandilio.tetris.client.model;
 
+import lombok.Data;
+
+@Data
 public class ViewGameResult {
     private final String login;
     private final String endTime;
@@ -11,21 +14,5 @@ public class ViewGameResult {
         this.endTime = endTime;
         this.movesCount = movesCount;
         this.gameDuration = gameDuration;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public String getMovesCount() {
-        return movesCount;
-    }
-
-    public String getGameDuration() {
-        return gameDuration;
     }
 }

@@ -8,7 +8,7 @@ public interface ActionProvider {
     /**
      * Swot to user top list result
      *
-     * @param results list og game session results
+     * @param results {@link List} of game session results
      */
     void showTopResults(List<ViewGameResult> results);
 

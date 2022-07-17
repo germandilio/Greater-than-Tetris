@@ -2,6 +2,7 @@ module ru.hse.germandilio.tetris.tetris {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires static lombok;
 
     exports ru.hse.germandilio.tetris.server;
     exports ru.hse.germandilio.tetris.server.application;

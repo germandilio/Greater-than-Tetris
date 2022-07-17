@@ -141,7 +141,7 @@ public class TetrisViewController {
         TimerTask closeSession = new TimerTask() {
             @Override
             public void run() {
-                if (stats.hasEndedGame()) return;
+                if (stats.isEndedGame()) return;
 
                 // update last stopWatch clock to avoid race condition time mismatch.
                 stats.stopGame();
@@ -495,7 +495,7 @@ public class TetrisViewController {
         exitAlertWindow.setTitle("Результаты игры");
 
         // set body properties
-        if (stats.opponentLeaveGame()) {
+        if (stats.isOpponentLeaveGame()) {
             setupWithoutResultsAlert(exitAlertWindow);
         } else {
             setupWithResultsAlert(exitAlertWindow);
