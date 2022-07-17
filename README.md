@@ -1,7 +1,7 @@
 # Greater than Tetris
-Client-server communication based on sockets and string commands without any high-level libraries.
+Client-server communication based on sockets and string commands without Network high-level libraries.
 
-Libraries: JDK 17, JavaFX, Apache Derby and JUnit 5.
+Libraries: JDK 17, Lombook, JavaFX, Apache Derby and JUnit 5.
 
 ## Client-server application based on Sockets.
 Server configuration should contain:
