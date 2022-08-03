@@ -1,7 +1,10 @@
 # Greater than Tetris
 Client-server communication based on sockets and string commands without Network high-level libraries.
 
-Libraries: JDK 17, Lombook, JavaFX, Apache Derby and JUnit 5.
+Libraries: JDK 17, Lombok, JavaFX, Apache Derby and JUnit 5.
+
+### Command API ###
+[API docs](https://germandilio.github.io/Greater-than-Tetris/ru.hse.germandilio.tetris.tetris/ru/hse/germandilio/tetris/shared/commands/CommandsAPI.html)
 
 ## Client-server application based on Sockets.
 Server configuration should contain:
